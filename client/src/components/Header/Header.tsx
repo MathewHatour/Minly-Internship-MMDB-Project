@@ -11,34 +11,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useState } from "react";
 import type { MouseEvent } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 function Header() {
-  const navigate = useNavigate();
   const location = useLocation();
   const [genreAnchorEl, setGenreAnchorEl] = useState<null | HTMLElement>(null);
   const genreMenuOpen = Boolean(genreAnchorEl);
   const isHomeActive = location.pathname === "/";
 
-  const handleLogoClick = () => {
-    if (location.pathname === "/") navigate(0);
-    else navigate("/");
-  };
-
   const handleGenreClick = (event: MouseEvent<HTMLElement>) =>
     setGenreAnchorEl(event.currentTarget);
   const handleGenreClose = () => setGenreAnchorEl(null);
-  const handleGenreSelect = (genre: string) => {
-    handleGenreClose();
-    navigate(`/genres/${genre}`);
-  };
 
   return (
     <AppBar
       position="static"
       color="inherit"
       elevation={0}
-      sx={{ borderBottom: "1px solid #E6E6E6" }}
+      sx={{ borderBottom: "1px solid", borderColor: "divider" }}
     >
       <Toolbar
         disableGutters
@@ -51,46 +41,31 @@ function Header() {
       >
         {/* Left group */}
         <Box sx={{ display: "flex", alignItems: "center", gap: "61.78px" }}>
-          <Box
-            onClick={handleLogoClick}
-            sx={{
-              fontFamily: "Rubik",
-              fontWeight: 700,
-              fontSize: "26.76px",
-              lineHeight: "32px",
-              color: "#418CFB",
-              cursor: "pointer",
+          <Link
+            to="/"
+            onClick={() => {
+              if (isHomeActive) {
+                window.location.reload();
+              }
             }}
+            style={{ textDecoration: "none" }}
           >
-            MMDB
-          </Box>
+            <Box
+              sx={{
+                fontFamily: "Rubik",
+                fontWeight: 700,
+                fontSize: "26.76px",
+                lineHeight: "32px",
+                color: "primary.main",
+                cursor: "pointer",
+              }}
+            >
+              MMDB
+            </Box>
+          </Link>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "34px" }}>
-            <Box
-              onClick={() => navigate("/")}
-              sx={{
-                fontFamily: "Inter",
-                fontWeight: 500,
-                fontSize: "16px",
-                lineHeight: "19px",
-                letterSpacing: "-0.025em",
-                color: isHomeActive ? "#003055" : "#697586",
-                cursor: "pointer",
-              }}
-            >
-              Home
-            </Box>
-
-            <Box
-              onClick={handleGenreClick}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                py: "7px",
-                cursor: "pointer",
-              }}
-            >
+            <Link to="/" style={{ textDecoration: "none" }}>
               <Box
                 sx={{
                   fontFamily: "Inter",
@@ -98,25 +73,38 @@ function Header() {
                   fontSize: "16px",
                   lineHeight: "19px",
                   letterSpacing: "-0.025em",
-                  color: "#697586",
+                  color: isHomeActive ? "text.primary" : "text.secondary",
+                  cursor: "pointer",
                 }}
               >
-                Genre
+                Home
               </Box>
-              <ArrowDropDownIcon sx={{ color: "#697586", fontSize: "18px" }} />
-            </Box>
+            </Link>
+
+            <Button
+              onClick={handleGenreClick}
+              endIcon={<ArrowDropDownIcon sx={{ fontSize: "18px" }} />}
+              sx={{
+                color: "text.secondary",
+                px: "2px",
+                py: "7px",
+                minWidth: 0,
+              }}
+            >
+              Genre
+            </Button>
             <Menu
               anchorEl={genreAnchorEl}
               open={genreMenuOpen}
               onClose={handleGenreClose}
             >
-              <MenuItem onClick={() => handleGenreSelect("action")}>
+              <MenuItem component={Link} to="/genres/action" onClick={handleGenreClose}>
                 Action
               </MenuItem>
-              <MenuItem onClick={() => handleGenreSelect("comedy")}>
+              <MenuItem component={Link} to="/genres/comedy" onClick={handleGenreClose}>
                 Comedy
               </MenuItem>
-              <MenuItem onClick={() => handleGenreSelect("drama")}>
+              <MenuItem component={Link} to="/genres/drama" onClick={handleGenreClose}>
                 Drama
               </MenuItem>
             </Menu>
@@ -138,9 +126,7 @@ function Header() {
               borderRadius: "60px",
             }}
           >
-            <SearchIcon
-              sx={{ width: "20px", height: "20px", color: "#697586" }}
-            />
+            <SearchIcon sx={{ width: "20px", height: "20px", color: "text.secondary" }} />
             <InputBase
               placeholder="Search"
               sx={{
@@ -149,35 +135,37 @@ function Header() {
                 fontSize: "16px",
                 lineHeight: "19px",
                 letterSpacing: "-0.025em",
-                color: "#697586",
+                color: "text.secondary",
                 width: "100%",
               }}
             />
           </Box>
 
-          <Box
-            onClick={() => navigate("/signup")}
-            sx={{
-              fontFamily: "Roboto",
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: "19px",
-              color: "#418CFB",
-              cursor: "pointer",
-            }}
-          >
-            Sign up
-          </Box>
+          <Link to="/signup" style={{ textDecoration: "none" }}>
+            <Box
+              sx={{
+                fontFamily: "Roboto",
+                fontWeight: 500,
+                fontSize: "16px",
+                lineHeight: "19px",
+                color: "primary.main",
+                cursor: "pointer",
+              }}
+            >
+              Sign up
+            </Box>
+          </Link>
 
           <Button
-            onClick={() => navigate("/login")}
+            component={Link}
+            to="/login"
             sx={{
               fontFamily: "Roboto",
               fontWeight: 500,
               fontSize: "16px",
               lineHeight: "19px",
               color: "#FFFFFF",
-              backgroundColor: "#418CFB",
+              backgroundColor: "primary.main",
               px: "26px",
               py: "10px",
               borderRadius: "8px",
