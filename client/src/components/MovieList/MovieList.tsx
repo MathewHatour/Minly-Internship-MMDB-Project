@@ -20,13 +20,6 @@ function MovieList({ sort, onMovieClick }: MovieListProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    setPage(1);
-  }, [sort]);
-
-  useEffect(() => {
-    setLoading(true);
-    setError(false);
-
     fetch(`${API_URL}?page=${page}&sort=${sort}`)
       .then((response) => {
         if (!response.ok) {
@@ -45,6 +38,12 @@ function MovieList({ sort, onMovieClick }: MovieListProps) {
         setLoading(false);
       });
   }, [page, sort]);
+
+  const handlePageChange = (nextPage: number) => {
+    setLoading(true);
+    setError(false);
+    setPage(nextPage);
+  };
 
   const grid = (
     <Box
@@ -109,7 +108,7 @@ function MovieList({ sort, onMovieClick }: MovieListProps) {
         <Button
           variant="outlined"
           disabled={page <= 1}
-          onClick={() => setPage((p) => p - 1)}
+          onClick={() => handlePageChange(page - 1)}
         >
           Previous
         </Button>
@@ -119,7 +118,7 @@ function MovieList({ sort, onMovieClick }: MovieListProps) {
         <Button
           variant="outlined"
           disabled={page >= totalPages}
-          onClick={() => setPage((p) => p + 1)}
+          onClick={() => handlePageChange(page + 1)}
         >
           Next
         </Button>

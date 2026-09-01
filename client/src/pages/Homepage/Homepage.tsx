@@ -64,7 +64,7 @@ function Homepage() {
         </Menu>
       </Box>
 
-      <MovieList sort={sort} />
+      <MovieList key={sort} sort={sort} />
     </main>
   );
 }
