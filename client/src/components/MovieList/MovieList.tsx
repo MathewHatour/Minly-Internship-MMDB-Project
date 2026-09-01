@@ -22,7 +22,7 @@ function MovieList({ sort, onMovieClick }: MovieListProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_URL}?page=${page}&sort=${sort}`)
+    fetch(`${API_URL}?page=${page}&limit=8&sort=${sort}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch movies");
