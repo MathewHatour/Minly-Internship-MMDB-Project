@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import MovieList from "../../components/MovieList/MovieList";
 import type { SortOption } from "../../components/MovieList/MovieList";
 
@@ -41,15 +41,20 @@ function Homepage() {
 
         <Button
           onClick={(event) => setSortAnchorEl(event.currentTarget)}
-          endIcon={<ArrowDropDownIcon />}
+          startIcon={<FilterAltIcon />}
           sx={{
+            height: "40px",
+            px: "16px",
             fontFamily: "Inter",
             fontWeight: 500,
             fontSize: "16px",
-            color: "#003055",
+            lineHeight: "19px",
+            letterSpacing: "-0.025em",
+            color: "text.secondary",
+            textTransform: "none",
+            gap: "10px",
             border: "1px solid #E5E5E5",
-            borderRadius: "8px",
-            px: "16px",
+            borderRadius: "60px",
           }}
         >
           Sort by

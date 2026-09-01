@@ -55,6 +55,7 @@ function MovieCard({ movie, onClick }: MovieCardProps) {
             fontWeight: 900,
             fontSize: "16.56px",
             lineHeight: "23px",
+            letterSpacing: "-0.02em",
             color: "#FEB600",
           }}
         >

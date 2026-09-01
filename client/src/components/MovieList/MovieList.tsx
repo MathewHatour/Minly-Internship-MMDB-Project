@@ -1,4 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useEffect, useState } from "react";
 import MovieCard from "../MovieCard/MovieCard";
 import type { Movie, MoviesResponse } from "../../types/movie";
@@ -101,26 +103,50 @@ function MovieList({ sort, onMovieClick }: MovieListProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: "16px",
+          gap: "8px",
           mt: "40px",
         }}
       >
         <Button
-          variant="outlined"
           disabled={page <= 1}
           onClick={() => handlePageChange(page - 1)}
+          sx={{ minWidth: "32px", minHeight: "32px", width: "32px", height: "32px", p: 0 }}
         >
-          Previous
+          <ChevronLeftIcon />
         </Button>
-        <Typography>
-          Page {page} of {totalPages}
-        </Typography>
+
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => {
+          const isActive = num === page;
+          return (
+            <Button
+              key={num}
+              onClick={() => handlePageChange(num)}
+              sx={{
+                minWidth: "32px",
+                height: "32px",
+                p: 0,
+                fontFamily: "Inter",
+                fontWeight: 700,
+                fontSize: "14px",
+                lineHeight: "20px",
+                color: isActive ? "#418CFB" : "#003055",
+                backgroundColor: "#FFFFFF",
+                border: isActive ? "1px solid #418CFB" : "1px solid #DFE3E8",
+                borderRadius: "4px",
+                "&:hover": { backgroundColor: "#FFFFFF" },
+              }}
+            >
+              {num}
+            </Button>
+          );
+        })}
+
         <Button
-          variant="outlined"
           disabled={page >= totalPages}
           onClick={() => handlePageChange(page + 1)}
+          sx={{ minWidth: "32px", minHeight: "32px", width: "32px", height: "32px", p: 0 }}
         >
-          Next
+          <ChevronRightIcon />
         </Button>
       </Box>
     </Box>
