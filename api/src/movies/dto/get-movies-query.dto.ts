@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Max, Min } from 'class-validator';
+import { IsIn, IsInt, IsOptional, Max, Min } from 'class-validator';
 
 export class GetMoviesQueryDto {
   @IsOptional()
@@ -14,4 +14,8 @@ export class GetMoviesQueryDto {
   @Min(1)
   @Max(100)
   limit: number = 10;
+
+  @IsOptional()
+  @IsIn(['year_desc', 'year_asc'])
+  sort: 'year_desc' | 'year_asc' = 'year_desc';
 }

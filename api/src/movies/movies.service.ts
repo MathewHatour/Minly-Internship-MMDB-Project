@@ -13,11 +13,11 @@ export class MoviesService {
   ) {}
 
   async findAll(query: GetMoviesQueryDto) {
-    const { page, limit } = query;
+    const { page, limit, sort } = query;
 
     const skip = (page - 1) * limit;
 
-    const movies = await this.findMoviesQueryBuilder()
+    const movies = await this.findMoviesQueryBuilder(sort)
       .skip(skip)
       .take(limit)
       .getRawAndEntities();
@@ -38,7 +38,7 @@ export class MoviesService {
   }
 
   async findOne(id: number) {
-    const movies = await this.findMoviesQueryBuilder()
+    const movies = await this.findMoviesQueryBuilder('year_desc')
       .where('movie.id = :id', { id })
       .getRawAndEntities();
 
@@ -51,7 +51,9 @@ export class MoviesService {
     return this.withAverageRating(movie, movies.raw[0].averageRating);
   }
 
-  private findMoviesQueryBuilder() {
+  private findMoviesQueryBuilder(sort: 'year_desc' | 'year_asc') {
+    const direction = sort === 'year_asc' ? 'ASC' : 'DESC';
+
     return this.moviesRepository
       .createQueryBuilder('movie')
       .leftJoin('reviews', 'review', 'review.movie_id = movie.id')
@@ -68,7 +70,7 @@ export class MoviesService {
       ])
       .addSelect('AVG(review.rating)', 'averageRating')
       .groupBy('movie.id')
-      .orderBy('movie.releaseYear', 'DESC')
+      .orderBy('movie.releaseYear', direction)
       .addOrderBy('movie.title', 'ASC');
   }
 
